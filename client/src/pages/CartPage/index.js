@@ -1,24 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { StripeProvider, Elements } from 'react-stripe-elements';
 import Axios from 'axios';
-import {
-  Table,
-  Space,
-  Button,
-  Modal,
-  Form,
-  Input,
-  Select,
-  Empty,
-  message,
-} from 'antd';
+import { Table, Space, Button, Modal, Form, Empty, message } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import CheckoutForm from './CheckoutForm';
+import CollectionCreateForm from './CollectionCreateForm';
 import './style.css';
 
 import Navbar from '../../components/common/Navbar';
-
-const { Option } = Select;
 
 const { confirm } = Modal;
 
@@ -29,6 +18,8 @@ const CartPage = () => {
   const [checkoutData, setCheckoutData] = useState([]);
   const [budget, setBudget] = useState('');
   const [update, setUpdate] = useState(false);
+
+  const [form] = Form.useForm();
 
   const cloudinaryLink =
     'https://res.cloudinary.com/dacf3uopo/image/upload/v1593353472/';
@@ -95,101 +86,6 @@ const CartPage = () => {
         message.error('حدث خطا في عملية الشراء');
       }
     }
-  };
-
-  const CollectionCreateForm = () => {
-    const [form] = Form.useForm();
-
-    const PropertyForm = () => {
-      if (checkoutData) {
-        const keys = Object.keys(checkoutData.property);
-
-        return (
-          <Form.Item
-            name="property"
-            label="السعر"
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-          >
-            <Select className="select-before">
-              {keys.map((key) => (
-                <Option value={key}>
-                  الأبعاد: {key} , السعر: {checkoutData.property[key]}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
-        );
-      }
-
-      return <Select className="select-before" />;
-    };
-
-    return (
-      <Modal
-        visible={visible}
-        title="شراء اللوحة"
-        okText="شراء"
-        cancelText="إلغاء"
-        onCancel={() => {
-          setVisible(false);
-        }}
-        onOk={() => {
-          form
-            .validateFields()
-            .then((values) => {
-              form.resetFields();
-              onCreate(values);
-            })
-            .catch((info) => {
-              message.error({
-                message: 'خطأ في إدخال المعلومات',
-                description: info.errorFields[0].errors,
-              });
-            });
-        }}
-      >
-        <Form
-          form={form}
-          layout="horizontal"
-          name="form_in_modal"
-          initialValues={{
-            paintingId: checkoutData.painting_id,
-            title: checkoutData.title,
-            description: checkoutData.description,
-            category: checkoutData.category,
-          }}
-        >
-          <Form.Item
-            name="paintingId"
-            label="رقم اللوحة"
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-          >
-            <Input disabled />
-          </Form.Item>
-
-          <Form.Item name="title" label="اسم اللوحة">
-            <Input disabled />
-          </Form.Item>
-
-          <Form.Item name="description" label="الوصف">
-            <Input type="textarea" disabled />
-          </Form.Item>
-
-          <Form.Item name="category" label="التصنيف">
-            <Input disabled />
-          </Form.Item>
-          <PropertyForm />
-        </Form>
-      </Modal>
-    );
   };
 
   const columns = [
@@ -291,7 +187,31 @@ const CartPage = () => {
           />
         )}
         <div>
-          <CollectionCreateForm />
+          <Modal
+            visible={visible}
+            title="شراء اللوحة"
+            okText="شراء"
+            cancelText="إلغاء"
+            onCancel={() => {
+              setVisible(false);
+            }}
+            onOk={() => {
+              form
+                .validateFields()
+                .then((values) => {
+                  form.resetFields();
+                  onCreate(values);
+                })
+                .catch((info) => {
+                  message.error({
+                    message: 'خطأ في إدخال المعلومات',
+                    description: info.errorFields[0].errors,
+                  });
+                });
+            }}
+          >
+            <CollectionCreateForm checkoutData={checkoutData} ref={form} />
+          </Modal>
         </div>
       </div>
     </div>
