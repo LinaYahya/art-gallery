@@ -10,15 +10,15 @@ import * as ROUTES from '../constants/routes';
 import LogoutContext from '../Contexts/LogoutContext';
 import AuthorizationContext from '../Contexts/AuthorizationContext';
 import 'antd/dist/antd.css';
-import Login from '../containers/LoginPage';
-import Signup from '../containers/SignupPage';
-import Painting from '../containers/PaintingDetailsPage';
-import ProfilePage from '../containers/ProfilePage';
-import LandingPage from '../containers/LandingPage';
-import AdminDashboard from '../containers/Admin';
-import AdminLogin from '../containers/AdminLoginPage';
-import CartPage from '../containers/CartPage';
-import NotFound from '../containers/PageNotFound';
+import Login from '../pages/LoginPage';
+import Signup from '../pages/SignupPage';
+import Painting from '../pages/PaintingDetailsPage';
+import ProfilePage from '../pages/ProfilePage';
+import LandingPage from '../pages/LandingPage';
+import AdminDashboard from '../pages/Admin';
+import AdminLogin from '../pages/AdminLoginPage';
+import CartPage from '../pages/CartPage';
+import NotFound from '../pages/PageNotFound';
 
 function App() {
   const [user, setUser] = useState({});
